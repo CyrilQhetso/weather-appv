@@ -1,0 +1,57 @@
+<div class="weather-container" [ngClass]="getTemperatureClass(currentWeather?.temp_c)">
+    <app-search (search)="handleSearch($event)"></app-search>
+  
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+  
+    <div *ngIf="currentWeather && location" class="current-weather">
+      <div class="location-info">
+        <h2>{{ location.name }}, {{ location.country }}</h2>
+        <p class="local-time">{{ location.localtime | date:'medium' }}</p>
+      </div>
+      
+      <div class="main-info">
+        <img [src]="currentWeather.condition.icon" 
+             [alt]="currentWeather.condition.text"
+             class="weather-icon">
+        <div class="temp-container">
+          <div class="temp">{{ currentWeather.temp_c | number:'1.0-0' }}°C</div>
+          <div class="feels-like">
+            Feels like {{ currentWeather.feelslike_c | number:'1.0-0' }}°C
+          </div>
+        </div>
+      </div>
+  
+      <div class="details">
+        <div class="detail-item">
+          <span class="label">Condition:</span>
+          <span class="value">{{ currentWeather.condition.text }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Humidity:</span>
+          <span class="value">{{ currentWeather.humidity }}%</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Wind Speed:</span>
+          <span class="value">{{ currentWeather.wind_kph }} km/h</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">UV Index:</span>
+          <span class="value">{{ currentWeather.uv }}</span>
+        </div>
+      </div>
+    </div>
+  
+    <div *ngIf="forecast" class="forecast">
+      <div *ngFor="let day of forecast" class="forecast-day">
+        <h3>{{ day.date | date:'EEE' }}</h3>
+        <img [src]="day.day.condition.icon" 
+             [alt]="day.day.condition.text"
+             class="forecast-icon">
+        <div class="temp">
+          {{ day.day.maxtemp_c | number:'1.0-0' }}° / {{ day.day.mintemp_c | number:'1.0-0' }}°
+        </div>
+        <div class="avg-temp">{{ day.day.avgtemp_c | number:'1.0-0' }}°C</div>
+        <small class="condition">{{ day.day.condition.text }}</small>
+      </div>
+    </div>
+  </div>
