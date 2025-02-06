@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
+import { forkJoin } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -26,5 +27,12 @@ export class WeatherService {
 
   getWeatherByCity(city: string) {
     return this.http.get(`${this.apiUrl}/forecast.json?key=${this.apiKey}&q=${city}&days=3`);
+  }
+
+  getMultipleLocationsWeather(cities: string[]) {
+    return forkJoin(cities.map(city =>
+      this.http.get(`${this.apiUrl}/forecast.json?key=${this.apiKey}&q=${city}&days=3`)
+      )
+    );
   }
 }

@@ -1,28 +1,43 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ThemeService {
+  private currentThemeSubject = new BehaviorSubject<'dawn' | 'day' | 'dusk' | 'night'>('day');
+  public currentTheme$ = this.currentThemeSubject.asObservable();
 
-  private currentTheme: 'light' | 'dark' = 'light' ;
-
-  constructor() { 
+  constructor() {
     this.setAutoTheme();
+    setInterval(() => this.setAutoTheme(), 1000 * 60);
   }
 
   private setAutoTheme() {
     const hours = new Date().getHours();
-    this.currentTheme = (hours > 18 || hours < 6 ) ? 'dark' : 'light';
-    document.body.className = this.currentTheme;
+    let newTheme: 'dawn' | 'day' | 'dusk' | 'night';
+
+    if (hours >= 5 && hours < 9) {
+      newTheme = 'dawn';
+    } else if (hours >= 9 && hours < 17) {
+      newTheme = 'day';
+    } else if (hours >= 17 && hours < 20) {
+      newTheme = 'dusk';
+    } else {
+      newTheme = 'night';
+    }
+
+    if (newTheme !== this.currentThemeSubject.value) {
+      this.currentThemeSubject.next(newTheme);
+      this.applyThemeToBody(newTheme);
+    }
   }
 
-  toggleTheme() {
-    this.currentTheme = this.currentTheme === 'light' ? 'dark' : 'light';
-    document.body.className = this.currentTheme;
+  private applyThemeToBody(theme: string) {
+    document.body.className = theme;
   }
 
   getCurrentTheme() {
-    return this.currentTheme;
+    return this.currentThemeSubject.value;
   }
 }

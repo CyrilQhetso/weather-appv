@@ -37,17 +37,9 @@ export class SearchComponent {
     }
   }
 
-  selectSuggestion(suggestion: any) {
-    this.city = suggestion.name;
-    this.showSuggestions =  false;
-    this.search.emit(`${suggestion.name}, ${suggestion.country}`);
-  }
-
-  onSearch() {
-    if (this.city.trim()) {
-      this.search.emit(this.city.trim());
-      this.city = '';
-      this.showSuggestions = false;
-    }
+  selectAndAdd(suggestion: any) {
+    this.search.emit(suggestion);
+    this.showSuggestions = false;
+    this.city = '';
   }
 }

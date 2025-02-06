@@ -1,23 +1,17 @@
 <div class="search-container">
-    <div class="search-input-container">
-      <input type="text" 
-             placeholder="Search city..." 
-             [(ngModel)]="city" 
-             (input)="onInputChange()"
-             (keyup.enter)="onSearch()">
-      
-      <button (click)="onSearch()">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-          <path fill="currentColor" d="M10 2a8 8 0 105.293 14.707l4.707 4.707 1.414-1.414-4.707-4.707A8 8 0 0010 2zm0 2a6 6 0 110 12 6 6 0 010-12z"/>
-        </svg>
-      </button>
-    </div>
-  
-    <div *ngIf="showSuggestions && suggestions.length" class="suggestions">
-      <div *ngFor="let suggestion of suggestions" 
-           class="suggestion-item"
-           (click)="selectSuggestion(suggestion)">
-        {{ suggestion.name }}, {{ suggestion.country }}
-      </div>
+  <div class="search-input-container">
+    <input type="text" 
+           [(ngModel)]="city" 
+           placeholder="Search city..."
+           (input)="onInputChange()">
+  </div>
+
+  <div *ngIf="showSuggestions && suggestions.length" class="suggestions">
+    <div *ngFor="let suggestion of suggestions" 
+         class="suggestion-item"
+         (click)="selectAndAdd(suggestion)">
+      {{ suggestion.name }}, {{ suggestion.country }}
+      <button class="add-btn">Add</button>
     </div>
   </div>
+</div>

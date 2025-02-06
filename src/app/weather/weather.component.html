@@ -1,57 +1,64 @@
-<div class="weather-container" [ngClass]="getTemperatureClass(currentWeather?.temp_c)">
-    <app-search (search)="handleSearch($event)"></app-search>
-  
-    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
-  
-    <div *ngIf="currentWeather && location" class="current-weather">
+<div class="weather-container" [ngClass]="currentTheme">
+  <app-search (search)="handleSearch($event)"></app-search>
+
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+  <div class="weather-cards">
+    <div *ngIf="currentLocationWeather" 
+         class="weather-card"
+         [ngClass]="getTemperatureClass(currentLocationWeather.current.temp_c)">
       <div class="location-info">
-        <h2>{{ location.name }}, {{ location.country }}</h2>
-        <p class="local-time">{{ location.localtime | date:'medium' }}</p>
+        <h2>{{ currentLocationWeather.location.name }}, {{ currentLocationWeather.location.country }}</h2>
+        <span class="current-label">Current Location</span>
       </div>
-      
       <div class="main-info">
-        <img [src]="currentWeather.condition.icon" 
-             [alt]="currentWeather.condition.text"
-             class="weather-icon">
-        <div class="temp-container">
-          <div class="temp">{{ currentWeather.temp_c | number:'1.0-0' }}°C</div>
-          <div class="feels-like">
-            Feels like {{ currentWeather.feelslike_c | number:'1.0-0' }}°C
-          </div>
-        </div>
+        <img [src]="currentLocationWeather.current.condition.icon" 
+             [alt]="currentLocationWeather.current.condition.text">
+        <div class="temp">{{ currentLocationWeather.current.temp_c | number:'1.0-0' }}°C</div>
       </div>
-  
       <div class="details">
         <div class="detail-item">
           <span class="label">Condition:</span>
-          <span class="value">{{ currentWeather.condition.text }}</span>
+          <span class="value">{{ currentLocationWeather.current.condition.text }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Feels like:</span>
+          <span class="value">{{ currentLocationWeather.current.feelslike_c | number:'1.0-0' }}°C</span>
         </div>
         <div class="detail-item">
           <span class="label">Humidity:</span>
-          <span class="value">{{ currentWeather.humidity }}%</span>
-        </div>
-        <div class="detail-item">
-          <span class="label">Wind Speed:</span>
-          <span class="value">{{ currentWeather.wind_kph }} km/h</span>
-        </div>
-        <div class="detail-item">
-          <span class="label">UV Index:</span>
-          <span class="value">{{ currentWeather.uv }}</span>
+          <span class="value">{{ currentLocationWeather.current.humidity }}%</span>
         </div>
       </div>
     </div>
-  
-    <div *ngIf="forecast" class="forecast">
-      <div *ngFor="let day of forecast" class="forecast-day">
-        <h3>{{ day.date | date:'EEE' }}</h3>
-        <img [src]="day.day.condition.icon" 
-             [alt]="day.day.condition.text"
-             class="forecast-icon">
-        <div class="temp">
-          {{ day.day.maxtemp_c | number:'1.0-0' }}° / {{ day.day.mintemp_c | number:'1.0-0' }}°
+
+    <div *ngFor="let weatherData of citiesWeather" 
+         class="weather-card"
+         [ngClass]="getTemperatureClass(weatherData.current.temp_c)">
+      <div class="location-info">
+        <h2>{{ weatherData.location.name }}, {{ weatherData.location.country }}</h2>
+        <button class="remove-btn" 
+                (click)="removeLocation(weatherData.location.name + '-' + weatherData.location.country)">
+          ×
+        </button>
+      </div>
+      
+      <div class="main-info">
+        <img [src]="weatherData.current.condition.icon" 
+             [alt]="weatherData.current.condition.text">
+        <div class="temp">{{ weatherData.current.temp_c | number:'1.0-0' }}°C</div>
+      </div>
+
+      <div class="forecast">
+        <div *ngFor="let day of weatherData.forecast.forecastday" class="forecast-day">
+          <h3>{{ day.date | date:'EEE' }}</h3>
+          <img [src]="day.day.condition.icon" 
+               [alt]="day.day.condition.text">
+          <div class="temp-range">
+            {{ day.day.mintemp_c | number:'1.0-0' }}° - {{ day.day.maxtemp_c | number:'1.0-0' }}°
+          </div>
         </div>
-        <div class="avg-temp">{{ day.day.avgtemp_c | number:'1.0-0' }}°C</div>
-        <small class="condition">{{ day.day.condition.text }}</small>
       </div>
     </div>
   </div>
+</div>

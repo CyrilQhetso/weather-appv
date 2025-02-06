@@ -1,149 +1,147 @@
 .weather-container {
-    max-width: 800px;
-    margin: 2rem auto;
-    padding: 2rem;
-    border-radius: 10px;
-    transition: background-color 0.5s, color 0.5s;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.5s ease;
+  padding: 2rem;
+  min-height: 100vh;
+  transition: background 0.5s ease;
 
-    &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        opacity: 0.1;
-        z-index: 0;
-        background-size: cover;
-        background-position: center;
-    }
-
-    &.cold-weather {
-        background: linear-gradient(135deg, #6B9AC4 0%, #E7F0FD 100%);
-        &::before {
-          background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill="%2366B3FF" d="M46 40h-.6c-1.3-5-6-8.5-11.4-8.5-5.4 0-10.1 3.5-11.4 8.5H18c-4.4 0-8 3.6-8 8s3.6 8 8 8h28c4.4 0 8-3.6 8-8s-3.6-8-8-8z"/><path fill="%23FFF" d="M30 46l-4 8m8-8l-4 8m8-8l-4 8"/></svg>');
-        }
-    }
-
-    &.cool-weather {
-        background: linear-gradient(135deg, #7EC8E3 0%, #E3F2FD 100%);
-        &::before {
-          background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill="%23B0BEC5" d="M46 40h-.6c-1.3-5-6-8.5-11.4-8.5-5.4 0-10.1 3.5-11.4 8.5H18c-4.4 0-8 3.6-8 8s3.6 8 8 8h28c4.4 0 8-3.6 8-8s-3.6-8-8-8z"/></svg>');
-        }
-    }
-
-    &.warm-weather {
-        background: linear-gradient(135deg, #FFD86B 0%, #FFF3E0 100%);
-        &::before {
-          background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path fill="%23FFC107" d="M32 12c-6.6 0-12 5.4-12 12v12H20c-6.6 0-12 5.4-12 12s5.4 12 12 12h24c6.6 0 12-5.4 12-12s-5.4-12-12-12h-4V24c0-6.6-5.4-12-12-12z"/><circle fill="%23FFEB3B" cx="32" cy="32" r="10"/></svg>');
-        }
-    }
-
-    &.hot-weather {
-        background: linear-gradient(135deg, #FFA726 0%, #FFECB3 100%);
-        &::before {
-          background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle fill="%23FFEB3B" cx="32" cy="32" r="16"/><path fill="none" stroke="%23FFEB3B" stroke-width="3" d="M32 10v6m0 32v6M10 32h6m32 0h6m-29.9-16.5l4.2 4.2m18.4 18.4l4.2 4.2m-26.6-4.2l4.2-4.2m18.4-18.4l4.2-4.2"/></svg>');
-        }
-    }
+  &.dawn {
+    background: linear-gradient(135deg, #ffd3b6, #ffaaa5);
+  }
   
-    .dark & {
-        background-color: rgba(44, 62, 80, 0.9);
-        color: #ecf0f1;
-        
-        &::before {
-          opacity: 0.05;
-        }
-    }
+  &.day {
+    background: linear-gradient(135deg, #87CEEB, #E0F7FA);
+  }
   
-    .light & {
-        background-color: rgba(245, 246, 250, 0.9);
-        color: #2c3e50;
-        
-        &::before {
-          opacity: 0.15;
-        }
+  &.dusk {
+    background: linear-gradient(135deg, #ff9966, #ff5e62);
+  }
+  
+  &.night {
+    background: linear-gradient(135deg, #2c3e50, #3498db);
+    color: white;
+  }
+
+  .weather-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .weather-card {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+
+    .night & {
+      background: rgba(0, 0, 0, 0.2);
     }
 
-    .current-weather, .forecast, .error {
-        position: relative;
-        z-index: 1;
+    &:hover {
+      transform: translateY(-2px);
     }
-  
-    .current-weather {
-      text-align: center;
-      margin-bottom: 2rem;
-  
-      .main-info {
+
+    .location-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+
+      h2 {
+        margin: 0;
+        font-size: 1.4rem;
+      }
+
+      .remove-btn {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #666;
+        padding: 0 0.5rem;
+
+        &:hover {
+          color: #e74c3c;
+        }
+      }
+
+      .current-label {
+        font-size: 0.9rem;
+        color: #666;
+      }
+    }
+
+    .main-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+
+      img {
+        width: 80px;
+        height: 80px;
+      }
+
+      .temp {
+        font-size: 2.5rem;
+        font-weight: bold;
+      }
+    }
+
+    .details {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+
+      .detail-item {
         display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 1rem;
-        margin: 1rem 0;
-  
-        .temp {
-          font-size: 3rem;
-          font-weight: bold;
+        justify-content: space-between;
+        padding: 0.5rem;
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 6px;
+
+        .label {
+          color: #666;
+        }
+
+        .value {
+          font-weight: 500;
         }
       }
     }
-  
+
     .forecast {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 1rem;
-  
+
       &-day {
-        padding: 1rem;
-        border-radius: 8px;
         text-align: center;
-        transition: background-color 0.3s;
-  
-        .dark & {
-          background-color: #34495e;
+        padding: 0.5rem;
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 6px;
+
+        img {
+          width: 40px;
+          height: 40px;
+          margin: 0.5rem auto;
         }
-  
-        .light & {
-          background-color: #dcdde1;
+
+        .temp-range {
+          font-size: 0.9rem;
+          font-weight: 500;
         }
       }
     }
-  
-    .error {
-      color: #e74c3c;
-      text-align: center;
-      margin: 1rem 0;
-    }
-
-    .main-info img {
-        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-        animation: float 3s ease-in-out infinite;
-    }
-    
   }
 
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
+  .error {
+    text-align: center;
+    color: #e74c3c;
+    margin: 1rem 0;
+    font-weight: 500;
   }
-
-  .forecast-day {
-    img {
-      width: 50px;
-      height: 50px;
-      margin: 0.5rem auto;
-      filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
-    }
-    
-    .temp {
-      font-weight: bold;
-      margin: 0.5rem 0;
-    }
-    
-    small {
-      display: block;
-      font-size: 0.8rem;
-    }
-  }
+}
